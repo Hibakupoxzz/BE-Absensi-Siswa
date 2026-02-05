@@ -10,6 +10,6 @@ type AttedanceLogs struct {
 	CapturedIp  *string
 	ClockInTime time.Time
 
-	User  Users           `gorm:"foreginKey:UserID;references:ID"`
-	Token AttedanceTokens `gorm:"foreginKey:TokenID;references:ID"`
+	User  Users           `gorm:"foreignKey:UserID;references:ID"`
+	Token AttedanceTokens `gorm:"foreignKey:TokenID;references:ID"`
 }

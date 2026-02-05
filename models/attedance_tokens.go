@@ -7,6 +7,7 @@ type AttedanceTokens struct {
 	TokenCode  string
 	CreatedBy  int64
 	IsActive   bool
+	LateAfter  time.Time
 	ValidUntil time.Time
 	CreatedAt  time.Time
 

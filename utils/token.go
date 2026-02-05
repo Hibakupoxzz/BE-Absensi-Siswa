@@ -18,11 +18,12 @@ func RandomString(n int) string {
 	return string(b)
 }
 
-func CreateToken(adminID int64, durationMinutes int) (*models.AttedanceTokens, error) {
+func CreateToken(adminID int64, durationMinutes int, lateAfter int) (*models.AttedanceTokens, error) {
 	token := models.AttedanceTokens{
 		TokenCode:  RandomString(10),
 		CreatedBy:  adminID,
 		IsActive:   true,
+		LateAfter: time.Now().Add(time.Minute * time.Duration(lateAfter)),
 		ValidUntil: time.Now().Add(time.Minute * time.Duration(durationMinutes)),
 	}
 
@@ -37,31 +38,29 @@ func CreateToken(adminID int64, durationMinutes int) (*models.AttedanceTokens, e
 	return &token, nil
 }
 
-func VerifyTokenCode(input string) (bool, error) {
+func VerifyTokenCode(input string) (*models.AttedanceTokens, error) {
 	var token models.AttedanceTokens
 
-	// ambil token dari DB
 	err := database.DB.
 		Where("token_code = ? AND is_active = ?", input, true).
 		First(&token).Error
 	if err != nil {
-		return false, err
+		return  nil, err
 	}
 
 	// cek expired
 	if time.Now().After(token.ValidUntil) {
-		// nonaktifkan token
 		err := database.DB.
 			Model(&models.AttedanceTokens{}).
 			Where("id = ?", token.ID).
 			Update("is_active", false).Error
 		if err != nil {
-			return false, err
+			return  nil, err
 		}
 
-		return false, nil // ❗ expired = false
+		return  nil, err 
 	}
 
-	return true, nil
+	return &token, nil
 }
 
