@@ -8,5 +8,5 @@ type TokenRes struct {
 	CreatedBy  UserMini `json:"created_by"`
 	IsActive   bool     `json:"is_active"`
 	ValidUntil time.Time
-	CreatedAt time.Time
+	CreatedAt  time.Time
 }

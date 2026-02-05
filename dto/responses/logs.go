@@ -1,0 +1,11 @@
+package responses
+
+import "time"
+
+type LogsRes struct {
+	ID          int64     `json:"id"`
+	User        UserMini  `json:"user"`
+	Status      string    `json:"status"`
+	CapturedIp  *string   `json:"captured_ip"`
+	ClockInTime time.Time `json:"clock_in_time"`
+}
